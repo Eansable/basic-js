@@ -1,6 +1,6 @@
 const CustomError = require("../extensions/custom-error");
 
-module.exports = function transform(arr) {
+module.exports = function transform1(arr) {
  let i = 0;
  let finishArr = [];
  while (i < arr.length) {
@@ -14,3 +14,36 @@ module.exports = function transform(arr) {
  }
  return finishArr;
 };
+
+module.exports = function transform(arr) {
+const finishArr = [];
+const tempArr = arr.slice();
+const NA = '--empty';
+for (let i = 0; i < tempArr.length; i++) {
+  if (tempArr[i] === '--empty') { }
+  else if (tempArr[i] === '--discard-next' ) {
+    if (i + 1 < tempArr.length){
+     tempArr[i + 1] = NA;
+    }
+  } else if (tempArr[i] === '--discard-prev') {
+    if (i - 1 > 0){
+      if (tempArr[i - 1] === '--empty') { }
+      else {finishArr.pop();}
+    }
+  } else if (tempArr[i] === '--double-next' ) {
+    if (i + 1 < tempArr.length){
+    finishArr.push(tempArr[i + 1]);
+    }
+  } else if (tempArr[i] === '--double-prev') {
+    if (i - 1 > 0){
+      if (tempArr[i - 1] === '--empty') { }
+    else {finishArr.push(tempArr[i - 1])}
+    }
+  }
+    else {
+    finishArr.push(tempArr[i]);
+  }
+
+}
+return finishArr;
+}
